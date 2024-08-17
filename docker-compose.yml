@@ -1,0 +1,42 @@
+services:
+  api-dev:
+    image: sdpx/api
+    ports:
+      - 8081:5000
+    depends_on:
+      - db-dev
+    environment:
+      - DB_HOST=db-dev
+      - DB_USER=admin
+      - DB_PASSWORD=db4dev$
+      - DB_DB=mongodb
+
+  db-dev:
+    image: sdpx/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: db4dev$
+      MONGO_INITDB_DATABASE: mongodb
+    volumes:
+      - ./data-dev:/data/db
+
+  api-test:
+    image: sdpx/api
+    ports:
+      - 8082:5000
+    depends_on:
+      - db-test
+    environment:
+      - DB_HOST=db-test
+      - DB_USER=admin
+      - DB_PASSWORD=db4test$
+      - DB_DB=mongodb
+
+  db-test:
+    image: sdpx/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: db4test$
+      MONGO_INITDB_DATABASE: mongodb
+    volumes:
+      - ./data-test:/data/db
